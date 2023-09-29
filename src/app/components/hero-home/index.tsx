@@ -2,7 +2,26 @@ import Image from "next/image";
 import heroCurve from "/public/assets/hero-curve.svg";
 import heroBg from "/public/assets/hero-rainbow-bg.jpg";
 
-const Hero = (props) => {
+type HeroButtonProps = {
+  ContentLink?: {
+    Expanded?: {
+      link?: {
+        target?: string;
+        title?: string;
+        href?: string;
+      };
+      buttonText?: string;
+    };
+  };
+};
+
+type HeroProps = {
+  pageTitle?: string;
+  heroContent?: string;
+  heroButton?: HeroButtonProps | null;
+};
+
+const Hero = (props: HeroProps) => {
   const { pageTitle, heroContent, heroButton } = props;
 
   return (
@@ -10,9 +29,8 @@ const Hero = (props) => {
       <div className="container mx-auto text-center">
         <div className="rte-simple">
           <Image className="mx-auto" src="/assets/primany-nav--logo.svg" alt="Optimizely Logo" width="200" height="49" />
-
-          <h1 className="t-display-2 mb-[16px] mt-[24px]" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1>
-          <p className="t-subtitle" dangerouslySetInnerHTML={{ __html: heroContent }}></p>
+          {pageTitle ? <h1 className="t-display-2 mb-[16px] mt-[24px]" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1> : null}
+          {heroContent ? <p className="t-subtitle" dangerouslySetInnerHTML={{ __html: heroContent }}></p> : null}
         </div>
         {heroButton ? (
           <div className="mt-[40px]">

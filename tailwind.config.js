@@ -6,9 +6,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Figtree"', 'Arial', 'sans-serif'],
-        mono: ['"NBI Pro Mono', 'Arial', 'sans-serif'],
-        optiicons: ['icomoon']
+        sans: '"Figtree", Arial, sans-serif',
+        mono: 'NBI Pro Mono, Arial, sans-serif',
+        optiicons: 'icomoon'
       },
       fontWeight: {
         regular: 320,
@@ -22,7 +22,6 @@ module.exports = {
       'md': '12px'
     },
     colors: {
-        // Named Colors
         'optimizely-blue': {
           'DEFAULT': '#0037ff',
           '20-tint': '#ccd7ff',
@@ -101,7 +100,6 @@ module.exports = {
           '40-shade': '#360c66',
           '20-shade': '#1b0633',
         },
-        // Base Colors
         'black': 'var(--vulcan)',
         'white': '#fff',
         'vulcan': '#10141d',

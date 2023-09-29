@@ -3,7 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const Menu = (props) => {
+type MenuItem = {
+  RelativePath: string;
+  Name: string;
+};
+
+type MenuProps = {
+  className?: string;
+  items: MenuItem[];
+};
+
+const Menu: React.FC<MenuProps> = (props) => {
   const { className, items } = props;
   const [menuOpen, setMenuOpen] = useState(true);
 
