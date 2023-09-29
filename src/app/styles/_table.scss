@@ -1,0 +1,220 @@
+:root,
+::after,
+::before,
+.theme--dark,
+.theme--dark ::after,
+.theme--dark ::before {
+  // Table Variables
+  --table-cell-padding-x: 24px;
+  --table-cell-padding-y: 12px;
+  --table-border-radius: 15px;
+  --table-head-font-size: 1.8rem;
+  --table-body-font-size: 1.6rem;
+  --table-background-primary: var(--vulcan);
+  --table-background-secondary: var(--vulcan-95);
+  --table-background-tertiary: var(--vulcan-90);
+  --table-head-text-color: var(--white);
+  --table-body-text-color: var(--bright-gray);
+  --table-strong-text-color: var(--white);
+}
+
+.theme--light,
+.theme--light ::after,
+.theme--light ::before {
+  // Table Variables
+  --table-background-primary: var(--ghost-white);
+  --table-background-secondary: var(--white);
+  --table-background-tertiary: var(--bright-gray);
+  --table-head-text-color: var(--vulcan);
+  --table-body-text-color: var(--vulcan-85);
+  --table-strong-text-color: var(--vulcan);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 750px;
+
+  &::-webkit-scrollbar {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(215, 215, 225, 0.8);
+    border-color: rgba(255, 255, 255, 1);
+    border-width: 1px;
+    border-radius: 9999px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 9999px;
+  }
+}
+
+@mixin table() {
+  position: relative;
+
+  overflow: hidden;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  width: 100%;
+  margin-bottom: 6px;
+
+  color: var(--table-body-text-color);
+
+  background: var(--table-background-primary);
+  border-radius: var(--table-border-radius);
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  &:after {
+    pointer-events: none;
+    content: "";
+
+    position: absolute;
+    top: -1px;
+    left: -1px;
+
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+
+    background: linear-gradient(0deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 20%));
+    border-radius: var(--table-border-radius);
+  }
+
+  strong {
+    font-weight: var(--font-weight-semi-bold);
+    color: var(--table-strong-text-color);
+  }
+
+  thead {
+    border: 1px solid transparent;
+    border-bottom: 0;
+
+    tr > th:first-child {
+      border-top-left-radius: calc(var(--table-border-radius) + 1px);
+    }
+
+    tr > th:last-child {
+      border-top-right-radius: calc(var(--table-border-radius) + 1px);
+    }
+  }
+
+  &.table--sortable thead th {
+    cursor: pointer;
+    transition: 0.33s ease-in-out all;
+
+    &:hover,
+    &:focus {
+      background-color: var(--table-background-secondary);
+    }
+  }
+
+  thead tr th {
+    padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+
+    font-size: var(--table-head-font-size);
+    font-weight: var(--font-weight-semi-bold);
+    color: var(--table-head-text-color);
+    text-align: left;
+    vertical-align: top;
+
+    background: var(--table-background-tertiary);
+  }
+
+  tbody {
+    background: var(--table-background-primary);
+    border: 1px solid transparent;
+    border-top: 0;
+    //Smooth edges a little.
+    box-shadow: 0 0 3px var(--table-background-tertiary);
+
+    tr {
+      background: var(--table-background-primary);
+    }
+
+    tr:nth-child(2n + 1) {
+      background: var(--table-background-secondary);
+    }
+
+    tr:last-child > td:first-child {
+      border-bottom-left-radius: calc(var(--table-border-radius) + 2px);
+    }
+
+    tr:last-child > td:last-child {
+      border-bottom-right-radius: calc(var(--table-border-radius) + 2px);
+    }
+  }
+
+  tbody tr td {
+    padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+  }
+
+  .table-sort-input {
+    min-width: 75px;
+    padding: 2px 4px;
+
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-regular);
+    color: white;
+
+    background: rgba(255, 255, 255, 0.35);
+    border: none;
+    border-radius: 5px;
+
+    &::placeholder {
+      color: white;
+    }
+
+    + .table-sort-input {
+      margin-left: 1px;
+    }
+
+    .theme--light & {
+      color: var(--vulcan);
+
+      &::placeholder {
+        color: var(--vulcan);
+      }
+    }
+  }
+
+  .theme--light & {
+    &:after {
+      background: linear-gradient(180deg, #dcdfe30d, #dcdfe3);
+    }
+  }
+
+  .table__clear-filter-button {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+
+    background: none;
+    border: none;
+    border-radius: 100%;
+
+    transition: 0.5s ease-in-out all;
+
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .theme--light & {
+      circle,
+      path {
+        stroke: var(--vulcan-95);
+      }
+    }
+  }
+}

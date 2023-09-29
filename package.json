@@ -1,0 +1,42 @@
+{
+  "name": "optimizely-brand",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "generate": "graphql-codegen -r dotenv/config --config ./codegen.yaml",
+    "generate-local": "graphql-codegen -r dotenv/config --config ./codegen.yaml dotenv_config_path=./.env.local",
+    "prebuild": "graphql-codegen -r dotenv/config --config ./codegen.yaml",
+    "build": "next build",
+    "build-local": "yarn generate-local && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.yaml"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.0-rc.2",
+    "@apollo/experimental-nextjs-app-support": "^0.4.1",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@types/node": "20.4.7",
+    "@types/react": "18.2.18",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.46.0",
+    "eslint-config-next": "13.4.12",
+    "graphql": "^16.7.1",
+    "next": "13.4.12",
+    "postcss": "8.4.27",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sass": "^1.66.1",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "4.1.0",
+    "@graphql-codegen/introspection": "4.0.0",
+    "@graphql-codegen/typescript-graphql-request": "^5.0.0",
+    "@parcel/watcher": "^2.3.0"
+  }
+}

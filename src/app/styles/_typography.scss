@@ -1,0 +1,1054 @@
+@use "./table";
+
+// These styles are copied from the Optimizely site to save time. In your own site you would use Tailwind's .prose class and configure it accordingly!
+
+:root,
+::after,
+::before {
+  /* These space variables are used in conjunction with fluid type styles to keep spacing consistent. */
+  /* Space 3xs: 4px → 4px */
+  --space-3xs: 0.4rem;
+
+  /* Space 2xs: 7px → 8px */
+  --space-2xs: clamp(0.7rem, 0.104vw + 0.667rem, 0.8rem);
+
+  /* Space xs: 11px → 12px */
+  --space-xs: clamp(1.1rem, 0.104vw + 1.067rem, 1.2rem);
+
+  /* Space s: 14px → 16px */
+  --space-s: clamp(1.4rem, 0.208vw + 1.333rem, 1.6rem);
+
+  /* Space m: 21px → 24px */
+  --space-m: clamp(2.1rem, 0.313vw + 2rem, 2.4rem);
+
+  /* Space l: 28px → 32px */
+  --space-l: clamp(2.8rem, 0.417vw + 2.667rem, 3.2rem);
+
+  /* Space xl: 35px → 40px */
+  --space-xl: clamp(3.5rem, 0.521vw + 3.333rem, 4rem);
+
+  /* Space 2xl: 53px → 60px */
+  --space-2xl: clamp(5.3rem, 0.729vw + 5.067rem, 6rem);
+
+  // We are using 62.5% root font size. 1.6rem = 16px, 1rem = 10px.
+  --font-size-base: 1.6rem;
+
+  --font-size-body-1: 1.4rem;
+  --font-size-body-2: var(--font-size-base);
+  --font-size-body-3: 1.8rem;
+
+  // 12px
+  --font-size-overline: 1.2rem;
+  // 16px
+  --font-size-h6: 1.6rem;
+  // 16px
+  --font-size-h5: 2rem;
+  // 20px -> 24px
+  --font-size-subtitle: clamp(2rem, 0.417vw + 1.867rem, 2.4rem);
+  // 20px -> 24px
+  --font-size-h4: clamp(2rem, 0.417vw + 1.867rem, 2.4rem);
+  // 24px -> 30px
+  --font-size-h3: clamp(2.4rem, 0.625vw + 2.2rem, 3rem);
+  // 30px -> 36px
+  --font-size-h2: clamp(3rem, 0.625vw + 2.8rem, 3.6rem);
+  // 36px -> 48px
+  --font-size-h1: clamp(3.6rem, 1.25vw + 3.2rem, 4.8rem);
+
+  // 48px -> 60px
+  --font-size-d3: clamp(4.8rem, 1.25vw + 4.4rem, 6rem);
+  // 60px -> 72px
+  --font-size-d2: clamp(6rem, 1.25vw + 5.6rem, 7.2rem);
+  // 72px -> 96px
+  --font-size-d1: clamp(7.2rem, 2.5vw + 6.4rem, 9.6rem);
+
+  --font-weight-extra-bold: 800;
+  --font-weight-bold: 620; // h1
+  --font-weight-semi-bold: 600;
+  --font-weight-medium: 450; // h2, h3, h4, h5
+  --font-weight-regular: 400;
+  --font-weight-light: 300; // h6
+}
+
+// Typography resets
+@mixin body() {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-light);
+}
+
+@mixin display-1() {
+  font-size: var(--font-size-d1);
+  font-weight: var(--font-weight-bold);
+  line-height: clamp(8rem, 2.917vw + 7.067rem, 10.8rem);
+}
+
+@mixin display-2() {
+  font-size: var(--font-size-d2);
+  font-weight: var(--font-weight-bold);
+  line-height: clamp(6.8rem, 1.25vw + 6.4rem, 8rem);
+}
+
+@mixin display-3() {
+  font-size: var(--font-size-d3);
+  font-weight: var(--font-weight-bold);
+  line-height: clamp(5.2rem, 1.667vw + 4.667rem, 6.8rem);
+}
+
+@mixin heading-1() {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: clamp(4rem, 1.25vw + 3.6rem, 5.2rem);
+}
+
+@mixin heading-2() {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: clamp(3.6rem, 0.417vw + 3.467rem, 4rem);
+}
+
+@mixin heading-3() {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: clamp(3rem, 0.625vw + 2.8rem, 3.6rem);
+}
+
+@mixin heading-4() {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-medium);
+  line-height: clamp(2.8rem, 0.208vw + 2.733rem, 3rem);
+}
+
+@mixin heading-5() {
+  font-size: var(--font-size-h5);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+
+@mixin heading-6() {
+  font-size: var(--font-size-h6);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.43;
+}
+
+@mixin t-overline() {
+  display: block;
+
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-overline);
+  font-weight: var(--font-weight-regular);
+  line-height: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  // Link specific styles
+  &[href] {
+    --color-link-body: var(--color-overline);
+    --color-link-body-hover: var(--color-overline);
+  }
+}
+
+// Essentially a different colored h4.
+@mixin t-subtitle() {
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-light);
+  line-height: clamp(2.8rem, 0.208vw + 2.733rem, 3rem);
+  color: var(--color-subtitle);
+}
+
+@mixin body-1() {
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-light);
+  line-height: 1.5;
+}
+
+@mixin caption() {
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-light);
+  line-height: 1.8rem;
+}
+
+@mixin body-2() {
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-light);
+  line-height: 1.5;
+}
+
+@mixin body-3() {
+  font-size: var(--font-size-body-3);
+  font-weight: var(--font-weight-light);
+  line-height: 1.5;
+}
+
+@mixin eyebrow() {
+  @include t-overline();
+}
+
+@mixin emphasis-gradient() {
+  em {
+    font-style: normal;
+
+    background: radial-gradient(100% 741.05% at 100% 77.78%, #3be081 0%, #00ccff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    .theme--light & {
+      background: radial-gradient(100% 741.05% at 100% 77.78%, var(--purple) 0%, #3c2bff 56.25%, var(--optimizely-blue) 100%);
+      // Background clip has to be specified again.
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+  }
+}
+
+@mixin hr() {
+  width: 100%;
+  height: 2px;
+  margin: 5.6rem 0;
+
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) -2.88%, rgba(255, 255, 255, 0.3) 51.83%, rgba(255, 255, 255, 0.025) 99.11%, rgba(255, 255, 255, 0) 99.11%);
+  border: none;
+
+  .theme--light & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) -2.88%, rgba(0, 55, 255, 0.5) 51.83%, rgba(255, 255, 255, 0.05) 99.11%, rgba(255, 255, 255, 0) 99.11%);
+  }
+}
+
+@mixin link-style() {
+  position: relative;
+
+  overflow: hidden;
+
+  text-decoration: none;
+  vertical-align: bottom;
+  background-image: linear-gradient(90deg, currentColor, currentColor), linear-gradient(90deg, var(--color-secondary), var(--color-secondary));
+  background-repeat: no-repeat;
+  background-position: 100% 100%, 0 100%;
+  background-size: 100% 2px, 0 2px;
+
+  transition: all 0.4s ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: var(--color-link-body-hover);
+    background-size: 0 2px, 100% 2px;
+  }
+
+  &[href]:not(:where(
+        [href^="#"],
+        [href^="/"]:not([href^="//"]),
+        [href*="//optimizely.com"],
+        [href*="//optimizely.com"]
+    )):after {
+    content: "";
+
+    transform: translateY(3px);
+
+    display: inline-block;
+
+    width: 1em;
+    height: 1em;
+    margin-left: 4px;
+
+    background: currentColor;
+
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none"><path d="M1.18198 9.24265L9.66726 0.757368L9.65594 0.768688C7.90533 2.5193 7.90951 5.36358 9.66726 7.12133M9.66466 0.75477C7.90691 2.51252 5.06381 2.51788 3.31463 0.768696L3.3033 0.757368" stroke="currentColor"/></svg>')
+      no-repeat 50% 50%;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none"><path d="M1.18198 9.24265L9.66726 0.757368L9.65594 0.768688C7.90533 2.5193 7.90951 5.36358 9.66726 7.12133M9.66466 0.75477C7.90691 2.51252 5.06381 2.51788 3.31463 0.768696L3.3033 0.757368" stroke="currentColor"/></svg>')
+      no-repeat 50% 50%;
+  }
+
+  &[disabled] {
+    color: var(--color-link-body-disabled);
+  }
+
+  &.link-unstyled {
+    background-image: none !important;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  &:has(img) {
+    background-image: none;
+
+    &:after {
+      display: none !important;
+    }
+  }
+}
+
+@mixin rte() {
+  *::selection {
+    color: white;
+    text-shadow: 2px 2px var(--optimizely-blue-20-shade);
+    background: var(--optimizely-blue-40-shade);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: white;
+  }
+  // Type sizes and weights
+  .t-display-1 {
+    @include display-1();
+    @include emphasis-gradient();
+  }
+
+  .t-display-2 {
+    @include display-2();
+    @include emphasis-gradient();
+  }
+
+  .t-display-3 {
+    @include display-3();
+    @include emphasis-gradient();
+  }
+
+  .t-heading-1,
+  h1 {
+    @include heading-1();
+    @include emphasis-gradient();
+  }
+
+  .t-heading-2,
+  h2 {
+    @include heading-2();
+    @include emphasis-gradient();
+  }
+
+  .t-heading-3,
+  h3 {
+    @include heading-3();
+  }
+
+  .t-heading-4,
+  h4 {
+    @include heading-4();
+  }
+
+  .t-heading-5,
+  h5 {
+    @include heading-5();
+  }
+
+  .t-heading-6,
+  h6 {
+    @include heading-6();
+  }
+
+  .t-heading-1,
+  .t-heading-2,
+  .t-heading-3,
+  .t-heading-4,
+  .t-heading-5,
+  .t-heading-6,
+  .t-display-3,
+  .t-display-2,
+  .t-display-1,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    strong {
+      font-weight: bolder;
+    }
+
+    em {
+      font-style: normal;
+    }
+  }
+
+  .t-subtitle {
+    @include t-subtitle();
+  }
+
+  .t-overline {
+    @include t-overline();
+  }
+
+  strong {
+    font-weight: var(--font-weight-semi-bold);
+  }
+
+  p {
+    @include body-2();
+    max-width: 780px;
+
+    strong {
+      font-weight: var(--font-weight-semi-bold);
+    }
+
+    &[style="text-align:center"] {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+  // List styles
+  ul {
+    list-style: none;
+  }
+
+  ul,
+  ol {
+    padding-inline-start: 25px;
+    line-height: 1.5;
+
+    ul,
+    ol {
+      margin-top: 0.5em;
+      margin-bottom: 1em;
+    }
+  }
+
+  ol:not(.list-unstyled) {
+    li + li {
+      margin-top: 8px;
+    }
+
+    li::marker {
+      font-size: 1.6rem;
+    }
+    // 1, a, i, I
+    > li > ol {
+      list-style-type: lower-alpha;
+
+      > li > ol {
+        list-style-type: lower-roman;
+
+        > li > ol {
+          list-style-type: upper-roman;
+        }
+      }
+    }
+
+    &.list-large-numbers {
+      counter-reset: opti-counter;
+      margin-bottom: 40px;
+      padding-left: 90px;
+      list-style: none;
+
+      > li {
+        counter-increment: opti-counter;
+        position: relative;
+        min-height: 50px;
+
+        + li {
+          margin-top: 24px;
+        }
+      }
+
+      > li::marker {
+        font-size: 0; // still here in the markup!
+      }
+
+      > li:after {
+        content: counter(opti-counter);
+        position: absolute;
+        top: 0px;
+        left: -100px;
+        display: block;
+        width: 80px;
+        height: 62px;
+        font-size: 4rem;
+        font-weight: var(--font-weight-bold);
+        line-height: 62px;
+        text-align: center;
+        background: radial-gradient(100% 741.05% at 100% 77.78%, #3be081 0%, #00ccff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-fill-color: transparent;
+
+        .theme--light & {
+          background: radial-gradient(100% 741.05% at 100% 77.78%, #861dff 0%, #3c2bff 56.25%, #0037ff 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-fill-color: transparent;
+        }
+      }
+
+      > li:before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        left: -100px;
+        display: block;
+        width: 1.6rem;
+        width: 80px;
+        height: 1.6rem;
+        height: 80px;
+        background-image: url("/sites/shared/assets/images/ol-large-number-bg-dark.svg");
+
+        .theme--light & {
+          background-image: url("/sites/shared/assets/images/ol-large-number-bg-light.svg");
+        }
+      }
+    }
+  }
+
+  ul:not(.list-unstyled) {
+    list-style: none;
+
+    li {
+      position: relative;
+
+      &::marker {
+        content: "";
+      }
+
+      &:hover:before {
+        opacity: 0.8;
+      }
+
+      + li {
+        margin-top: 8px;
+      }
+    }
+
+    li:before {
+      content: "•";
+      position: absolute;
+      top: 1rem;
+      left: -1.7rem;
+      transform: translateY(-50%);
+      font-size: 20px;
+      line-height: 1;
+      transition: 0.25s ease-in-out opacity;
+    }
+
+    &.list-checkmarks {
+      padding-inline-start: 33px;
+
+      > li:before {
+        content: "";
+        left: -2.4rem;
+        width: 1.2rem;
+        height: 1rem;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M4.63206 7.68777L10.1566 0L12 1.26077L6.19234 9.34258L6.12293 9.4103C5.32195 10.1917 4.02506 10.1972 3.21709 9.42276L3.2031 9.40935L0 6.11743L1.63281 4.60536L4.63206 7.68777Z' fill='url(%23paint0_linear_1677_970)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_1677_970' x1='-2.4' y1='-2' x2='9.40328' y2='12.1639' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0.1549' stop-color='%2300CCFF'/%3E%3Cstop offset='0.851153' stop-color='%230037FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+      }
+    }
+
+    &.list-arrows {
+      padding-inline-start: 33px;
+
+      > li:before {
+        content: "";
+        left: -2.4rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 8C16 3.5817 12.4104 1.56906e-07 7.9824 3.50461e-07C3.78975 5.33727e-07 0.35403 3.21245 3.19283e-07 7.30435L8.65859 7.30435C7.49632 6.28362 6.75786 4.79311 6.75786 3.13044L8.15223 3.13044C8.15223 5.43207 10.0286 7.30435 12.3353 7.30435L12.3353 8.69565C10.0286 8.69565 8.15223 10.5679 8.15223 12.8696L6.75786 12.8696C6.75786 11.2093 7.49046 9.71604 8.64995 8.69565L3.80099e-07 8.69565C0.35403 12.7875 3.78975 16 7.9824 16C12.4104 16 16 12.4183 16 8Z' fill='url(%23paint0_linear_1677_1324)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_1677_1324' x1='19.2' y1='-3.2' x2='4.1328e-07' y2='16' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0.1549' stop-color='%2300CCFF'/%3E%3Cstop offset='0.851153' stop-color='%230037FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+      }
+    }
+  }
+
+  dl:not(.list-unstyled) {
+    margin-bottom: var(--space);
+
+    dt {
+      font-weight: var(--font-weight-semi-bold);
+    }
+
+    dd + dt {
+      margin-top: 1em;
+    }
+  }
+
+  ul,
+  ol,
+  dl {
+    &[class*="row-cols"] {
+      li + li {
+        margin-top: 0;
+      }
+
+      li {
+        margin-bottom: 24px;
+      }
+    }
+
+    &.list-unstyled {
+      padding-left: 0;
+      list-style: none;
+
+      li:before {
+        content: "none";
+        display: none;
+      }
+    }
+  }
+  // Blockquotes
+  blockquote {
+    position: relative;
+    padding: 0px 0 0px 16px;
+    border-left: 2px solid;
+    border-image: linear-gradient(170deg, #00ccff -1.41%, #0037ff 82.14%) 1;
+  }
+  // Figcaption/caption
+  figcaption,
+  .t-caption {
+    @include caption();
+  }
+  // Anchors
+  a[href]:not(.button):not(.card-anchor):not(.t-link--arrow):not(.normal-link) {
+    @include link-style();
+  }
+  // Tables
+  table {
+    @include table.table();
+  }
+
+  &.table--excel table thead tr th {
+    // Sentense case titles since we can't guarentee the right casing in excel if used.
+    text-transform: lowercase;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  .form-block--table {
+    display: flex;
+    justify-content: flex-end;
+    background: transparent;
+
+    .theme--dark & {
+      background: transparent;
+    }
+
+    .input-wrapper {
+      min-width: 300px;
+      margin-bottom: 10px;
+    }
+
+    .input {
+      .theme--dark & {
+        background-color: var(--vulcan-95);
+      }
+    }
+  }
+  // Code Blocks
+  code:not([class]) {
+    overflow-x: auto;
+    display: block;
+    padding: 1em;
+    color: var(--white);
+    background: var(--vulcan-85);
+  }
+
+  code {
+    margin-bottom: 20px;
+    white-space: pre;
+
+    .hljs-copy-button {
+      cursor: pointer;
+      width: 2em;
+      height: 2em;
+    }
+
+    &.hljs {
+      background: var(--vulkan);
+    }
+
+    &.hljs::-webkit-scrollbar {
+      background-color: var(--vulkan);
+    }
+
+    &.hljs::-webkit-scrollbar-track {
+      background-color: var(--vulkan);
+    }
+
+    &.hljs::-webkit-scrollbar-thumb {
+      background: var(--vulkan-90);
+      border-radius: 3px;
+
+      &:hover {
+        background: var(--dark-blue-60-tint);
+      }
+    }
+  }
+
+  hr {
+    @include hr();
+  }
+
+  .wp-caption {
+    max-width: 100%;
+  }
+}
+
+@mixin prose() {
+  /**
+        RTE Element spacing.
+    **/
+  // Defaults to 1em spacing unless overridden like below.
+  > * + * {
+    margin-top: var(--space, 1em);
+  }
+
+  // H2 Should have 60px space before it on desktop.
+  :is(h2, .t-heading-2) {
+    --space: var(--space-2xl);
+  }
+
+  // H3 Should have 40px space before it on desktop.
+  :is(h3, .t-heading-3) {
+    --space: var(--space-xl);
+  }
+  // H4, H5, H6 Should have 32px space before it on desktop.
+  :is(h4, .t-heading-4, h5, .t-heading-5, h6, .t-heading-6) {
+    --space: var(--space-l);
+  }
+
+  // H1 Should have 24px space after it on desktop.
+  :is(h1 + *, .t-heading-1 + *) {
+    --space: var(--space-m);
+  }
+
+  // H2 Should have 24px space after it on desktop.
+  :is(h2 + *, .t-heading-2 + *) {
+    --space: var(--space-m);
+  }
+
+  // H3 Should have 16px space after it on desktop.
+  :is(h3 + *, .t-heading-3 + *) {
+    --space: var(--space-s);
+  }
+
+  // H4 Should have 8px space after it on desktop.
+  :is(h4 + *, .t-heading-4 + *) {
+    --space: var(--space-2xs);
+  }
+
+  // H5 Should have 8px space after it on desktop.
+  :is(h5 + *, .t-heading-5 + *) {
+    --space: var(--space-2xs);
+  }
+
+  // H6 Should have 8px space after it on desktop.
+  :is(h6 + *, .t-heading-6 + *) {
+    --space: var(--space-2xs);
+  }
+
+  // Subtitle spacing specifics
+  :is(h1, h2, h3, h4, h5, h6) {
+    + .t-subtitle {
+      --space: var(--space-2xs);
+    }
+  }
+
+  // Default with the h1 and h2 styles being unique.
+  :is(.t-subtitle + *) {
+    --space: var(--space-s);
+  }
+
+  :is(h2 + .t-subtitle + *, .t-heading-2 + .t-subtitle + *) {
+    --space: var(--space-m);
+  }
+
+  :is(h3 + .t-subtitle + *, .t-heading-3 + .t-subtitle + *) {
+    --space: var(--space-s);
+  }
+
+  :is(ul + *, ol + *, table + *, .table-wrapper + *) {
+    --space: var(--space-xl);
+  }
+
+  // Overline spacing specifics
+  :is(.t-overline + h1, .t-overline + .t-heading-1) {
+    --space: var(--space-l);
+  }
+
+  :is(.t-overline + *) {
+    --space: var(--space-s);
+  }
+
+  :is(.button-block) {
+    display: inline-block;
+  }
+
+  &.text-center .button-block {
+    float: none;
+  }
+
+  :is(.button) {
+    margin-right: var(--gutter-x);
+  }
+
+  &.text-center .button {
+    margin-right: calc(var(--gutter-x) / 2);
+    margin-left: calc(var(--gutter-x) / 2);
+  }
+
+  :is(p + .button, * + .button-block) {
+    --space: var(--space-xl);
+
+    margin-top: var(--space);
+  }
+
+  :is(.icon-block + *) {
+    --space: var(--space-s);
+  }
+
+  :is(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  // RTE adds a paragraph tag around images, so we need to target that.
+  :is(p > img:not(.icon)) {
+    --space: var(--space-xl);
+
+    display: block;
+
+    max-width: 75%;
+    height: auto;
+    margin-top: var(--space);
+    margin-block-end: var(--space);
+    padding: 3.2rem;
+
+    background: var(--vulcan-95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+
+    .theme--light & {
+      background: white;
+      border: 1px solid var(--athens-gray);
+    }
+
+    .theme--dark & {
+      &[src*=".png"] {
+        background: white;
+      }
+    }
+  }
+
+  :is(ul.row) {
+    margin-top: var(--space);
+  }
+
+  // Absolutely stupid hack for now to get around tinyMCE limitations.
+  :is(p:has(a.t-link--arrow)) {
+    --space: var(--space-xl);
+
+    display: inline-block;
+    margin-right: 24px;
+  }
+}
+
+.rte-simple {
+  @include rte();
+}
+
+.rte {
+  @include rte();
+  @include prose();
+
+  ol,
+  li {
+    @include prose();
+  }
+}
+
+// Type sizes and weights
+.t-display-1 {
+  @include display-1();
+}
+
+.t-display-2 {
+  @include display-2();
+}
+
+.t-display-3 {
+  @include display-3();
+}
+
+.t-heading-1 {
+  @include heading-1();
+  @include emphasis-gradient();
+}
+
+.t-heading-2 {
+  @include heading-2();
+}
+
+.t-heading-3 {
+  @include heading-3();
+}
+
+.t-heading-4 {
+  @include heading-4();
+}
+
+.t-heading-5 {
+  @include heading-5();
+}
+
+.t-heading-6 {
+  @include heading-6();
+}
+
+.t-heading-1,
+.t-heading-2,
+.t-heading-3,
+.t-heading-4,
+.t-heading-5,
+.t-heading-6,
+.t-display-3,
+.t-display-2,
+.t-display-1 {
+  color: var(--color-heading-large);
+
+  strong {
+    font-weight: bolder;
+  }
+
+  em {
+    font-style: normal;
+  }
+}
+
+.t-subtitle {
+  @include t-subtitle();
+}
+
+.t-body {
+  @include body-2();
+
+  strong {
+    font-weight: var(--font-weight-semi-bold);
+  }
+}
+
+.t-overline {
+  @include t-overline();
+}
+
+.t-link {
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  @include link-style();
+}
+
+.t-link--arrow {
+  position: relative;
+
+  display: inline-block;
+
+  padding-right: 22px;
+
+  font-weight: var(--font-weight-medium);
+  line-height: 36px;
+  color: var(--color-text-body);
+
+  &:after,
+  &:before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    margin: auto;
+  }
+
+  &:after {
+    content: "";
+
+    transform: translateX(-3px);
+    transform-origin: left;
+
+    width: 9px;
+    height: 100%;
+
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='13' viewBox='0 0 8 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 12.8652C1.5 9.55078 4.17767 6.86523 7.47866 6.86523H7.5M7.5 6.86034C4.18555 6.86034 1.5 4.18489 1.5 0.886595V0.865234' stroke='%2300CCFF' stroke-width='1.5'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    transition: 0.15s ease-in-out all;
+    transition-delay: 0.075s;
+
+    .theme--light & {
+      background-image: url("data:image/svg+xml,%3Csvg width='8' height='13' viewBox='0 0 8 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 12.8652C1.5 9.55078 4.17767 6.86523 7.47866 6.86523H7.5M7.5 6.86034C4.18555 6.86034 1.5 4.18489 1.5 0.886595V0.865234' stroke='%230037FF' stroke-width='1.5'/%3E%3C/svg%3E%0A");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+
+  &:before {
+    transform: translateY(0px) translateX(-2px) scaleX(0);
+    transform-origin: right;
+
+    width: 12px;
+    height: 2px;
+
+    background: var(--light-blue);
+
+    transition: 0.2s ease-in-out all;
+
+    .theme--light & {
+      background: var(--optimizely-blue);
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    &:before {
+      transform: translateY(0px) translateX(-2px) scaleX(1);
+      transition-delay: 0.1s;
+    }
+
+    &:after {
+      transform: translateX(0px);
+      transition-delay: 0s;
+    }
+  }
+
+  &.t-link--arrow--left {
+    padding-right: 0;
+    padding-left: 22px;
+
+    &:before,
+    &:after {
+      right: auto;
+      left: 0;
+    }
+
+    &:after {
+      transform: translateX(12px) scaleX(-1);
+    }
+
+    &:before {
+      transform: translateY(-1px) translateX(-8px) scaleX(-0);
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      &:before {
+        transform: translateY(-1px) translateX(-8px) scaleX(-1);
+        transition-delay: 0.1s;
+      }
+
+      &:after {
+        transform: translateX(8px) scaleX(-1);
+        transition-delay: 0s;
+      }
+    }
+  }
+}
+
+.text-center {
+  p {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

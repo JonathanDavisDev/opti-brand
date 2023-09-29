@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./typography";
+@import "./utilities";
+@import "./buttons";
+
+body {
+  font-size: 1.6rem;
+}
