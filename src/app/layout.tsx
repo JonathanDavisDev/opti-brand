@@ -95,7 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const footerItems: Footer["Links"] = footerData?.Home?.items[0]?.footer?.ContentLink?.Expanded?.links;
 
   return (
-    <html lang="en">
+    <html className="dark" lang="en">
       <body className="dark:bg-vulcan dark:text-white bg-ghost-white text-vulcan flex flex-col min-h-screen">
         <header>
           <Menu cmsUrl={`${process.env.CMS_URL}`} items={menuItems} className="absolute left-4 top-10 z-50" />

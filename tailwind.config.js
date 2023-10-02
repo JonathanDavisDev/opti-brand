@@ -8,6 +8,7 @@ module.exports = {
       pattern: /border-(optimizely-blue|purple|light-blue|green|orange)/
     }
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
