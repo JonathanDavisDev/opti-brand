@@ -15,43 +15,45 @@ const query = gql`
           ContentLink {
             Expanded {
               ... on ContainerCard {
-                title: Title
-                borderColor: Color
-                image: Image {
+                Title
+                Color
+                Image {
                   ContentLink {
                     Expanded {
-                      src: Url
+                      Url
                     }
                   }
                 }
-                imageLocation: ImageLocation
-                description: MainContent
+                ImageFull
+                ImageLocation
+                MainContent
                 ContentType
                 ContentLink {
-                  id: Id
+                  Id
                 }
               }
               ... on ClickableCard {
-                title: Title
-                borderColor: Color
-                image: Image {
+                Title
+                Color
+                Image {
                   ContentLink {
                     Expanded {
-                      src: Url
+                      Url
                     }
                   }
                 }
-                imageLocation: ImageLocation
-                description: MainContent
+                ImageFull
+                ImageLocation
+                MainContent
                 ContentType
                 ContentLink {
-                  id: Id
+                  Id
                 }
-                link: Link {
+                Link {
                   Target
                   Title
                   Text
-                  url: ContentLink {
+                  ContentLink {
                     Expanded {
                       RelativePath
                     }
@@ -88,18 +90,20 @@ const query = gql`
 export default async function Home() {
   const client = getClient();
   const data = (await client.query({ query })).data.Home.items[0];
-  const cardItems = data.cards;
+  const cardItems = data?.cards;
 
   return (
     <div>
       <Hero pageTitle={data.pageTitle} heroContent={data.heroContent} heroButton={data.heroButton} />
-      <div className="pb-[128px] px-[16px]">
-        <section className="container mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-[24px]">
-          {cardItems.map((card: ContainerCard | ClickableCard, index: Number) => {
-            return <Card key={card?.ContentLink?.Expanded?.ContentLink?.Id} {...card?.ContentLink?.Expanded} className={index == 0 ? "lg:row-span-2" : ""} />;
-          })}
-        </section>
-      </div>
+      {cardItems ? (
+        <div className="pb-[128px] px-[16px]">
+          <section className="container mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-[24px]">
+            {cardItems.map((card: ContainerCard | ClickableCard, index: Number) => {
+              return <Card key={card?.ContentLink?.Expanded?.ContentLink?.Id} {...card?.ContentLink?.Expanded} className={index == 0 ? "lg:row-span-2" : ""} />;
+            })}
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }

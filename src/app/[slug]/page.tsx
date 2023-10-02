@@ -37,7 +37,7 @@ export default async function DocsPage({ params }: { params: { slug: string } })
 
   return (
     <div>
-      <h1 className="t-overline text-independence dark:text-optimizely-blue-20-tint mb-6">{docPageData.Name}</h1>
+      <h1 className="t-overline text-independence dark:text-optimizely-blue-20-tint mb-6">{docPageData?.Name}</h1>
       <div className="rte" dangerouslySetInnerHTML={pageContent}></div>
     </div>
   );

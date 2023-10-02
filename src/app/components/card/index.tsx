@@ -1,57 +1,28 @@
-type LinkProps = {
-  url?: {
-    Expanded?: {
-      RelativePath?: string;
-    };
-  };
-};
+import { ClickableCard } from "@/generated/sdk";
 
-type ImageProps = {
-  src: string | null;
-  alt: string;
-  fullWidth: boolean;
-  ContentLink?: {
-    Expanded?: {
-      src?: string;
-    };
-  };
-};
+const Card = (props: ClickableCard & { children?: React.ReactNode; className?: string }) => {
+  const { Color = "", Title = "Card", Image, MainContent, className, children, Link = null, ImageLocation, ImageFull = false } = props;
 
-export type CardProps = {
-  borderColor?: string;
-  title?: string;
-  image?: ImageProps;
-  description?: string | TrustedHTML;
-  links?: string[] | null;
-  className?: string | null;
-  children?: React.ReactNode;
-  link?: LinkProps | null;
-  imageLocation?: string;
-};
-
-const Card = (props: CardProps) => {
-  const { borderColor = "", title = "Card", image = { src: null, alt: "", fullWidth: false }, description, links, className, children, link = null, imageLocation } = props;
-
-  const Tag = link ? "a" : "div";
+  const Tag = Link ? "a" : "div";
 
   return (
     <Tag
-      href={link?.url?.Expanded?.RelativePath}
-      className={`border-${borderColor} border-[1px] rounded border-opacity-40 flex overflow-hidden ${
-        imageLocation == "top" ? `flex-col ${image && image.fullWidth ? "" : "p-[32px]"} gap-[32px]` : `flex-row gap-10 ${image && image.fullWidth ? "" : "p-10"}`
+      href={Link?.ContentLink?.Expanded?.RelativePath ? Link?.ContentLink?.Expanded?.RelativePath : ""}
+      className={`border-${Color} border-[1px] rounded border-opacity-40 flex overflow-hidden ${
+        ImageLocation == "top" ? `flex-col ${Image && ImageFull ? "p-[32px]" : ""} gap-[32px]` : `flex-row gap-10 ${Image && ImageFull ? "p-10" : ""}`
       } ${className} ${Tag === "a" ? "gradient-hover" : ""}`}
     >
-      {image.ContentLink && image?.ContentLink?.Expanded?.src ? (
+      {Image?.ContentLink && Image?.ContentLink?.Expanded?.Url ? (
         <img
           alt=""
-          className={`${imageLocation == "top" ? "w-full object-cover" : `${image.fullWidth ? "max-w-[160px]" : "self-center"}`}`}
-          src={`${process.env.CMS_URL}/${image.ContentLink.Expanded.src}`}
+          className={`${ImageLocation == "top" ? "w-full object-cover" : `${ImageFull ? "self-center" : "max-w-[160px]"}`}`}
+          src={`${process.env.CMS_URL}/${Image.ContentLink.Expanded.Url}`}
         />
       ) : null}
-      <div className={`${image && image.fullWidth ? "p-10 pl-0" : ""}`}>
-        <div className="rte mb-[40px]">
-          <h2 className="t-heading-4">{title}</h2>
-          {description ? <div className="text-bright-gray font-light" dangerouslySetInnerHTML={{ __html: description }}></div> : null}
+      <div className={`${Image && ImageFull ? "" : "p-10"}`}>
+        <div className="rte mb-[40px] card-content">
+          <h2 className="t-heading-4">{Title}</h2>
+          {MainContent ? <div className="text-bright-gray font-light" dangerouslySetInnerHTML={{ __html: MainContent }}></div> : null}
         </div>
       </div>
     </Tag>

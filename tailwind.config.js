@@ -3,6 +3,11 @@ module.exports = {
   content: [
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    {
+      pattern: /border-(optimizely-blue|purple|light-blue|green|orange)/
+    }
+  ],
   theme: {
     extend: {
       fontFamily: {

@@ -25,10 +25,12 @@ const Hero = (props: HeroProps) => {
   const { pageTitle, heroContent, heroButton } = props;
 
   return (
-    <section className="pt-[60px] relative pb-[300px] xl:pb-[19.5vw] bg-top bg-cover overflow-hidden" style={{ backgroundImage: `url(${heroBg.src})` }}>
-      <div className="container mx-auto text-center">
+    <section className="pt-[60px] relative pb-[300px] xl:pb-[25.5vw] bg-top bg-cover overflow-hidden">
+      <div className="z-10 bg-gradient-to-b from-vulcan from-30% to-transparent h-[60%] w-full absolute top-0 left-0"></div>
+      <div className="container mx-auto text-center relative z-20">
         <div className="rte-simple">
           <Image className="mx-auto" src="/assets/primany-nav--logo.svg" alt="Optimizely Logo" width="200" height="49" />
+
           {pageTitle ? <h1 className="t-display-2 mb-[16px] mt-[24px]" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1> : null}
           {heroContent ? <p className="t-subtitle" dangerouslySetInnerHTML={{ __html: heroContent }}></p> : null}
         </div>
@@ -40,6 +42,10 @@ const Hero = (props: HeroProps) => {
           </div>
         ) : null}
       </div>
+      <video className="absolute top-0 left-0 w-full h-full object-cover" muted autoPlay loop>
+        <source src="/assets/hero-video.mp4" type="video/mp4" />
+        <Image src={heroBg.src} width="1400" height="592" alt="" />
+      </video>
       <Image alt="" className="absolute mx-auto bottom-0 right-0 left-[50%] translate-x-[-50%] w-[max(2560px,100%)] min-w-[2560px]" src={heroCurve} />
     </section>
   );
