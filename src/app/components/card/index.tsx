@@ -3,9 +3,13 @@
 import { ClickableCard } from "@/generated/sdk";
 import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-react";
-import guide from "./../../../../public/assets/guide.json";
-import colors from "./../../../../public/assets/color.json";
-import typography from "./../../../../public/assets/type.json";
+
+// @ts-ignore:next-line
+import guide from "/public/assets/guide.json";
+// @ts-ignore:next-line
+import colors from "/public/assets/color.json";
+// @ts-ignore:next-line
+import typography from "/public/assets/type.json";
 
 const Card = (props: ClickableCard & { children?: React.ReactNode; className?: string }) => {
   const { Color = "", Title = "Card", Image, MainContent, className, children, Link = null, ImageLocation, ImageFull = false } = props;
