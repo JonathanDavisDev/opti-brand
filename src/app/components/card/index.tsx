@@ -1,17 +1,17 @@
 "use client";
 
 import { ClickableCard } from "@/generated/sdk";
-import { lazy, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-react";
-import guide from "/public/assets/Guide.json";
-import colors from "/public/assets/Color.json";
-import typography from "/public/assets/type.json";
+import guide from "./../../../../public/assets/guide.json";
+import colors from "./../../../../public/assets/color.json";
+import typography from "./../../../../public/assets/type.json";
 
 const Card = (props: ClickableCard & { children?: React.ReactNode; className?: string }) => {
   const { Color = "", Title = "Card", Image, MainContent, className, children, Link = null, ImageLocation, ImageFull = false } = props;
   const Tag = Link ? "a" : "div";
   const [loaded, setLoaded] = useState(false);
-  const lottieAsset = useRef(null);
+  const lottieAsset = useRef(null) as any;
   let cardAsset = Image?.ContentLink && Image?.ContentLink?.Expanded?.Url;
 
   useEffect(() => {
