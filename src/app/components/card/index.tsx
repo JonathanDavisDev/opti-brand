@@ -1,9 +1,36 @@
+"use client";
+
 import { ClickableCard } from "@/generated/sdk";
+import { lazy, useEffect, useRef, useState } from "react";
+import Lottie from "lottie-react";
+import guide from "/public/assets/Guide.json";
+import colors from "/public/assets/Color.json";
+import typography from "/public/assets/type.json";
 
 const Card = (props: ClickableCard & { children?: React.ReactNode; className?: string }) => {
   const { Color = "", Title = "Card", Image, MainContent, className, children, Link = null, ImageLocation, ImageFull = false } = props;
-
   const Tag = Link ? "a" : "div";
+  const [loaded, setLoaded] = useState(false);
+  const lottieAsset = useRef(null);
+  let cardAsset = Image?.ContentLink && Image?.ContentLink?.Expanded?.Url;
+
+  useEffect(() => {
+    switch (Title) {
+      case "Colors":
+        lottieAsset.current = colors;
+
+        break;
+
+      case "Guide":
+        lottieAsset.current = guide;
+        break;
+
+      case "Typography":
+        lottieAsset.current = typography;
+        break;
+    }
+    setLoaded(true);
+  }, [Title]);
 
   return (
     <Tag
@@ -12,11 +39,15 @@ const Card = (props: ClickableCard & { children?: React.ReactNode; className?: s
         ImageLocation == "top" ? `flex-col ${Image && ImageFull ? "p-[32px]" : ""} gap-[32px]` : `flex-row gap-10 ${Image && ImageFull ? "p-10" : ""}`
       } ${className} ${Tag === "a" ? "gradient-hover" : ""}`}
     >
-      {Image?.ContentLink && Image?.ContentLink?.Expanded?.Url ? (
+      {lottieAsset.current && loaded ? (
+        // eslint-disable-next-line
+        <Lottie className="max-h-96" key={Title} animationData={lottieAsset.current} autoPlay={true} loop={true} />
+      ) : null}
+      {Image?.ContentLink && Image?.ContentLink?.Expanded?.Url && !lottieAsset.current ? (
         <img
           alt=""
-          className={`${ImageLocation == "top" ? "w-full object-cover" : `${ImageFull ? "self-center" : "max-w-[160px]"}`}`}
-          src={`${process.env.CMS_URL}/${Image.ContentLink.Expanded.Url}`}
+          className={`${ImageLocation == "top" ? "w-full object-cover" : `${ImageFull ? "self-center" : ""}`}`}
+          src={`${process.env.NEXT_PUBLIC_CMS_URL}/${Image.ContentLink.Expanded.Url}`}
         />
       ) : null}
       <div className={`${Image && ImageFull ? "" : "p-10"}`}>
