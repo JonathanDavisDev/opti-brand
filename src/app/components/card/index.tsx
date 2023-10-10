@@ -7,6 +7,7 @@ import Lottie from "lottie-react";
 import guide from "./assets/guide.json";
 import colors from "./assets/color.json";
 import typography from "./assets/type.json";
+import assets from "./assets/assets.json";
 
 const Card = (props: ClickableCard & { children?: React.ReactNode; className?: string }) => {
   const { Color = "", Title = "Card", Image, MainContent, className, children, Link = null, ImageLocation, ImageFull = false } = props;
@@ -29,6 +30,10 @@ const Card = (props: ClickableCard & { children?: React.ReactNode; className?: s
       case "Typography":
         lottieAsset.current = typography;
         break;
+
+      case "Assets":
+        lottieAsset.current = assets;
+        break;
     }
     setLoaded(true);
   }, [Title]);
@@ -42,7 +47,7 @@ const Card = (props: ClickableCard & { children?: React.ReactNode; className?: s
     >
       {lottieAsset.current && loaded ? (
         // eslint-disable-next-line
-        <Lottie className="max-h-96" key={Title} animationData={lottieAsset.current} autoPlay={true} loop={true} />
+        <Lottie className={`max-h-[28rem]`} key={Title} animationData={lottieAsset.current} autoPlay={true} loop={true} />
       ) : null}
       {Image?.ContentLink && Image?.ContentLink?.Expanded?.Url && !lottieAsset.current ? (
         <img
