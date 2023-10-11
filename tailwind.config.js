@@ -23,6 +23,12 @@ module.exports = {
         bold: 700
       }
     },
+    container: {
+      screens: {
+        xl: '1240px',
+        '2xl': '1400px',
+      }
+    },
     borderRadius: {
       DEFAULT: '24px',
       'md': '12px'

@@ -31,7 +31,7 @@ const Card = (props: ClickableCard & { children?: React.ReactNode; className?: s
         lottieAsset.current = typography;
         break;
 
-      case "Assets":
+      case "Tone of voice":
         lottieAsset.current = assets;
         break;
     }
@@ -52,7 +52,7 @@ const Card = (props: ClickableCard & { children?: React.ReactNode; className?: s
       {Image?.ContentLink && Image?.ContentLink?.Expanded?.Url && !lottieAsset.current ? (
         <img
           alt=""
-          className={`${ImageLocation == "top" ? "w-full object-cover" : `${ImageFull ? "self-center" : ""}`}`}
+          className={`${ImageLocation == "top" ? "w-full object-cover" : `${ImageFull ? "self-center max-w-[50%]" : ""}`}`}
           src={`${process.env.NEXT_PUBLIC_CMS_URL}/${Image.ContentLink.Expanded.Url}`}
         />
       ) : null}
