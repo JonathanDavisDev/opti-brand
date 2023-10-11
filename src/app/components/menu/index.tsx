@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { NavigationItem } from "@/generated/sdk";
 
@@ -34,9 +34,55 @@ type MenuProps = {
   cmsUrl: string; // Add the cmsUrl property here
 };
 
+export function useMediaQuery(query: string): boolean {
+  const getMatches = (query: string): boolean => {
+    // Prevents SSR issues
+    if (typeof window !== "undefined") {
+      return window.matchMedia(query).matches;
+    }
+    return false;
+  };
+
+  const [matches, setMatches] = useState<boolean>(getMatches(query));
+
+  function handleChange() {
+    setMatches(getMatches(query));
+  }
+
+  useEffect(() => {
+    const matchMedia = window.matchMedia(query);
+
+    // Triggered at the first client-side load and if query changes
+    handleChange();
+
+    // Listen matchMedia
+    if (matchMedia.addListener) {
+      matchMedia.addListener(handleChange);
+    } else {
+      matchMedia.addEventListener("change", handleChange);
+    }
+
+    return () => {
+      if (matchMedia.removeListener) {
+        matchMedia.removeListener(handleChange);
+      } else {
+        matchMedia.removeEventListener("change", handleChange);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  return matches;
+}
+
 const Menu: React.FC<MenuProps> = (props) => {
   const { className, items, cmsUrl } = props;
+  const matches = useMediaQuery("(min-width: 970px)");
   const [menuOpen, setMenuOpen] = useState(true);
+
+  useEffect(() => {
+    setMenuOpen(matches);
+  }, [matches]);
 
   return (
     <nav {...props} className={`p-[1px] min-w-[60px] bg-gradient-to-b from-vulcan-85 to-vulcan-95 overflow-hidden rounded-md ${className}`} role="Main Navigation">
@@ -49,7 +95,7 @@ const Menu: React.FC<MenuProps> = (props) => {
         >
           <h2 className="t-overline">Menu</h2>
         </button>
-        <ul className="w-full" style={{ display: menuOpen ? "" : "none" }}>
+        <ul className={`w-full ${menuOpen ? "" : "hidden"}`}>
           {items &&
             items.map((menuItem, index) => {
               let name = menuItem?.ContentLink?.Expanded?.Name;
