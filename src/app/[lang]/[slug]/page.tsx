@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { notFound } from "next/navigation";
-import { getClient } from "../../../apolloClient";
+import { getClient } from "../../../../apolloClient";
 
 const query = gql`
   query DocPageQuery($relative: String!) {
@@ -26,14 +26,15 @@ const query = gql`
 
 export default async function DocsPage({ params }: { params: { slug: string } }) {
   const client = getClient();
-  const { data } = await client.query({ query, variables: { relative: `/${params.slug}` } });
+  const { data } = await client.query({ query, variables: { relative: `/en/${params.slug}` } });
   const docPageData = data.DocPage.items[0];
 
   if (docPageData === undefined) {
     notFound();
   }
 
-  const pageContent = { __html: docPageData?.MainContent };
+  const regex = new RegExp(`src="/`, "g");
+  const pageContent = { __html: docPageData?.MainContent.replace(regex, `src="${process.env.CMS_URL}/`) };
 
   return (
     <div>
