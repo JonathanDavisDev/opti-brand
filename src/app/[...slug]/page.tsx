@@ -26,7 +26,7 @@ const query = gql`
 
 export default async function DocsPage({ params }: { params: { slug: string } }) {
   const client = getClient();
-  const { data } = await client.query({ query, variables: { relative: `/en/${params.slug}` } });
+  const { data } = await client.query({ query, variables: { relative: `/en/${params.slug[1]}` } });
   const docPageData = data.DocPage.items[0];
 
   if (docPageData === undefined) {

@@ -32,7 +32,6 @@ const Hero = (props: HeroProps) => {
           <Image className="mx-auto" src="/assets/primany-nav--logo.svg" alt="Optimizely Logo" width="200" height="49" />
 
           {pageTitle ? <h1 className="t-display-2 mb-[16px] mt-[24px]" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1> : null}
-          {heroContent ? <p className="t-subtitle" dangerouslySetInnerHTML={{ __html: heroContent }}></p> : null}
         </div>
         {heroButton ? (
           <div className="mt-[40px]">
