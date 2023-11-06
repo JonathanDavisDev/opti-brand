@@ -1,4 +1,4 @@
-schema: https://staging.cg.optimizely.com/content/v2?auth=${CG_SINGLE_KEY}
+schema: https://cg.optimizely.com/content/v2?auth=${CG_SINGLE_KEY}
 generates:
   ./src/generated/graphql.schema.json:
     plugins:
